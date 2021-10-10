@@ -1,0 +1,28 @@
+name: Build linux
+
+on:
+  push:
+    paths:
+      - 'linux'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout
+    - uses: actions/checkout@v2
+    
+    - name: Install Dependencies
+      run: ./install-deps.sh
+      
+    - name: Download linux submodule
+      run: wget -d https://github.com/Hwangseungwoo/linux/archieve/$(git rev-parse HEAD:linux).zip
+      
+    - name: Unzip linux submodule
+      run: unsiz $(git rev-parse HEAD:linux).zip
+      
+    - name: Build linux
+      run: ./build-linux.sh-$(git rev-parse HEAD:linux) tinyconfig .
+
